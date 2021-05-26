@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    let data = [];
+
+    function parseTime(time) {
+      return {
+        hour: parseInt(time.split(':')[0]),
+        minute: parseInt(time.split(':')[1])
+      }
+    }
+
+    function getNextAlert(hour, minute) {
+      const nextAlert = new Date(Date.now());
+      nextAlert.setMinutes(minute);
+      nextAlert.setHours(hour);
+      nextAlert.setSeconds(0);
+
+      const now = new Date(Date.now());
+      if(nextAlert < now)
+        nextAlert.setDate(nextAlert.getDate() + 1);
+
+      return nextAlert;
+    }
+
+    function sort() {
+      data.sort((a, b) => {
+        const linearA = a.nextAlert.getHours() * 60 * 60 + a.nextAlert.getMinutes() * 60;
+        const linearB = b.nextAlert.getHours() * 60 * 60 + b.nextAlert.getMinutes() * 60;
+
+        if(linearA < linearB) return 1;
+        if(linearB > linearA) return -1;
+        return 0;
+      });
+    }
+
+    function save() {
+      const json = JSON.stringify(data);
+      window.localStorage.setItem('data', json);
+    }
+    function load() {
+      const json = window.localStorage.getItem('data');
+      if(!(json === null))
+        data = JSON.parse(json);
+      data.map(item => item.nextAlert = new Date(item.nextAlert));
+      render();
+    }
+
+    function make(observation, hour) {
+      const id = uuid();
+      const buttonId = uuid();
+
+      const html = `
+      <div id=${id} class='list-item'>
+        <div class='list-text'>
+          <p class='text'>${observation}</p>
+          <p class='text text-tiny'>${hour}</p>
+        </div>
+        <button id=${buttonId} class='list-icon button icon' aria-label='Remover alarme ${observation} marcado para as ${hour} horas'>
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>`
+
+      const parsed =  parseTime(hour);
+      const nextAlert = getNextAlert(parsed.hour, parsed.minute);
+
+      return { html, hour, observation, nextAlert, id, buttonId};
+    }
+
+    function addItem() {
+      const observation = getValue('text');
+      const hour = getValue('hour');
+
+      if(observation === '') return;
+      if(hour === '') return;
+
+      const item = make(observation, hour);
+      data.push(item);
+      save();
+      render();
+      setValue('text', '');
+      setValue('hour', '');
+    }
+
+    function removeItem(id) {
+      const items = data.filter(item => item.id === id);
+
+      if(items.length !== 1)
+        return error(`Cannot remove: duplicated or null item`);
+      
+      const item = items[0];
+
+      data = data.filter(item => item.id !== id);
+      byId(item.id).remove();
+      save();
+      render();
+    }
+
+    function check() {
+      const now = new Date(Date.now());
+      data.map(item => {
+        if(item.nextAlert.getTime() <= now.getTime()) {
+          toast(item.observation);
+          const parsed = parseTime(item.hour)
+          item.nextAlert = getNextAlert(parsed.hour, parsed.minute);
+        }
+      });
+    }
+
+    function render() {
+      let html = '';
+      sort();
+      data.map(item => html += item.html);
+      setInner('list', html);
+      createRemovers();
+    }
+
+    function createRemovers() {
+      data.map(item => byId(item.buttonId).onclick = () => removeItem(item.id));
+    }
+
+    function error(msg) {
+      console.log(msg);
+    }
+
+    window.onload = () => {
+      load();
+      setInterval(check, 1000);
+    };
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper"> 
+    <div
+      id='content'
+      class="content"
+    >
+      <h1 class="title">
+        Despertador ⏰
+      </h1>
+
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Assunto"
+        id='text'
+        name='text'
+        aria-label='Nome do seu novo alarme'
+      >
+
+      <input
+        type="time"
+        class="text-input"
+        required
+        placeholder="Horário"
+        id='hour'
+        name='text'
+        aria-label='Horário do seu novo alarma, 4 números'
+      >
+    
+      <button
+        class='button add'
+        id='add'
+        onclick='addItem()'
+        aria-label='Adicionar novo alarme'
+      >
+        Adicionar 😁
+      </button>
+
+      <div id='list' class='list'></div>
+
+    </div>
+  </div>
+
+  <div id='toast-wrapper'>
+  </div>
+
+</body>
+</html>
