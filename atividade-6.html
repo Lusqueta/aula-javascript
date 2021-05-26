@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    window.onload = () => {
+      const params = new URLSearchParams(location.search);
+      const text = params.get('name');
+      if(text === null) return;
+
+      const name = titlefy(filterInput(text, regexNome));
+      if(name.split(' ').length < 2) return;
+
+      const firstName = name.split(' ').reverse().pop();
+      const lastName = name.split(' ').pop();
+      
+      setInner('paper', `${firstName} ${lastName}`);
+    }
+
+    function handleInput() {
+      const name = filterInput(getValue('name'), regexNome);
+      setValue('name', titlefy(name));
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class='wrapper'>
+    <main class='content'>
+      <h1 class='title'>
+        Form
+      </h1>
+      <p class='dissertation'>
+        Digite um nome e clique em "Enviar" para visualizar o nome por meio do formulário
+      </p>
+      <form
+        action='./atividade-6.html'
+      >
+        <input
+          type='text'
+          class='text-input'
+          required
+          placeholder='Destaque'
+          id='name'
+          name='name'
+          oninput="handleInput()"
+        >
+        <button
+          class='button'
+          type='submit'
+        >
+          Enviar
+        </button>
+        <div id='paper' class='paper text-middle'></div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

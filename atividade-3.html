@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  <script>
+
+    function handleClick() {
+      const text = getValue('text');
+      setInner('paper', Array.from(text.replace(/\ /gi, '⠀')).join(' '));
+    }
+
+  </script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper">
+    <main class="content">
+      <h1 class="title">
+        Separator
+      </h1>
+      <p class="dissertation">
+        Digite um texto qualquer no campo "Texto" para ver seus caracteres separados
+      </p>
+
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Texto"
+        id='text'
+      >
+      <button
+        class="button"
+        onclick="handleClick()"
+      >
+        Visualizar
+      </button>
+      <div id='paper' class="paper text-middle"></div>
+    </main>
+  </div>
+</body>
+</html>

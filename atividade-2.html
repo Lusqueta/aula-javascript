@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  <script>
+
+    function handleInput() {
+      const text = getValue('text');
+      setInner('number', text.length);
+    }
+
+  </script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper">
+    <main class="content">
+      <h1 class="title">
+        Counter
+      </h1>
+      <p class="dissertation">
+        Digite um texto qualquer no campo "Texto" para ver a quantidade de caracteres nele presente
+      </p>
+
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Texto"
+        id='text'
+        oninput="handleInput()"
+      >
+      <p
+        class="text"
+      >
+      Quantidade de caracteres: <span id='number'>0</span>
+      </p>
+    </main>
+  </div>
+</body>
+</html>

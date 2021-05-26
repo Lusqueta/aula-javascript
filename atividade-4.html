@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    function handleClick() {
+      const text = getValue('text');
+      const highlight = getValue('highlight');
+
+      const parsed = text.split(' ').map(word => word === highlight? `<span class='highlight'>${word}</span>` : word).join(' ');
+    
+      setInner('paper', parsed);
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper"> 
+    <main class="content">
+      <h1 class="title">
+        Highlight
+      </h1>
+      <p class="dissertation">
+        Digite um texto qualquer no campo "Texto" e uma palavra no campo "Destaque" para ver essa palavra destacada
+      </p>
+
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Texto"
+        id='text'
+      >
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Destaque"
+        id='highlight'
+        oninput="handle"
+      >
+      <button
+        class="button"
+        onclick="handleClick()"
+      >
+        Resultado
+      </button>
+      <div id='paper' class="paper"></div>
+    </main>
+  </div>
+</body>
+</html>

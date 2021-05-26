@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    const numPorExtenso = ['Zero', 'Um', 'Dois', 'Três', 'Quatro', 'Cinco', 'Seis', 'Sete', 'Oito', 'Nove', 'Dez'];
+
+    function parseNumbers(numbers) {
+      return Array.from(numbers).map(x => numPorExtenso[parseInt(x)]).join(', ');
+    }
+
+    function handleChange() {
+      const text = filterInput(getValue('text'), regexNumeros);
+      const numbers = parseNumbers(text);
+
+      setValue('text', text);
+      setInner('paper', numbers);
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper">
+    <main class="content">
+      <h1 class="title">
+        Numbers
+      </h1>
+      <p class="dissertation">
+        Digite alguns números no campo "Números" para convertê-los para extenso
+      </p>
+
+      <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Texto"
+        id='text'
+        oninput="handleChange()"
+      >
+
+      <div id='paper' class="paper"></div>
+    </main>
+  </div>
+</body>
+</html>

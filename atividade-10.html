@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    function gerar() {
+
+      const numbers = [];
+      for(let i = 0; i < 6; i++) {
+        let number = randInt(1, 60);
+        if(numbers.indexOf(number) > -1) {
+          i--;
+          continue;
+        }
+        numbers.push(number);
+      }
+      
+      setInner('paper', numbers.join(' '));
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class='wrapper'>
+    <main class='content'>
+      <h1 class='title'>
+        Sena
+      </h1>
+      <p class='dissertation'>
+        Aperte o botão "Gerar" para gerar 6 números aleatórios distintos
+      </p>
+      <button
+        class='button'
+        type='submit'
+        onclick='gerar()'
+      >
+        Gerar
+      </button>
+      <div id='paper' class='paper text-middle'></div>
+    </main>
+  </div>
+</body>
+</html>

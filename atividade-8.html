@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    const vogais = /[aeiou]/;
+    const alphanumeric = /[a-zA-Z]/;
+    const numbers = /[0-9]/
+
+    function isLetter(letter) {
+      return `${letter}`.match(alphanumeric) !== null;
+    }
+    
+    function isNumber(x) {
+      return `${x}`.match(numbers) !== null;
+    }
+    
+    function getVogais(text) {
+      return [...text].filter(letter => letter.match(vogais)).length;
+    }
+    
+    function getConsoantes(text) {
+      return [...text].filter(letter => isLetter(letter) && !letter.match(vogais)).length;
+    }
+    
+    function getSpaces(text) {
+      return [...text].filter(letter => letter === ' ').length;
+    }
+    
+    function getLetters(text) {
+      return [...text].filter(letter => isLetter(letter)).length;
+    }
+    
+    function getNumbers(text) {
+      return [...text].filter(letter => isNumber(letter)).length;
+    }
+
+    window.onload = () => {
+        const params = new URLSearchParams(location.search);
+        const text = params.get('text');
+        setValue('text', text);
+
+        setInner('vogais', getVogais(text));
+        setInner('consoantes', getConsoantes(text));
+        setInner('espacos', getSpaces(text));
+        setInner('letras', getLetters(text));
+        setInner('numeros', getNumbers(text));
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper"> 
+    <form class="content">
+      <h1 class="title">
+        Multiple Counter
+      </h1>
+      <p class="dissertation">
+        Digite um texto qualquer no campo "Texto" para ver a quantidade de caracteres de cada tipo nele presente
+      </p>
+
+      <input
+      type="text"
+      class="text-input"
+      required
+      placeholder="Texto"
+      id='text'
+      name='text'
+      >
+    
+      <button
+        class='button'
+        type='submit'
+      >
+        Enviar
+      </button>
+
+      <p
+        class="text"
+      >
+      Quantidade de vogais: <span id='vogais'>0</span>
+      </p>
+
+      <p
+        class="text"
+      >
+      Quantidade de consoantes: <span id='consoantes'>0</span>
+      </p>
+
+      <p
+        class="text"
+      >
+      Quantidade de espaços: <span id='espacos'>0</span>
+      </p>
+
+      <p
+        class="text"
+      >
+      Quantidade de letras: <span id='letras'>0</span>
+      </p>
+
+      <p
+        class="text"
+      >
+      Quantidade de numeros: <span id='numeros'>0</span>
+      </p>
+
+    </form>
+  </div>
+</body>
+</html>

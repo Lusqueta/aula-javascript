@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='./styles.css'>
+  <script src='./scripts/utils.js'></script>
+  
+  <script>
+
+    function handleChange() {
+      const text = getValue('text');
+      const alternate = [...text].map((letter, index) => (index & 1) == 1 ? letter.toLowerCase() : letter.toUpperCase()).join('');
+
+      setValue('text', alternate);
+    }
+
+  </script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper"> 
+    <main class="content">
+      <h1 class="title">
+        Alternate
+      </h1>
+      <p class="dissertation">
+        Digite um texto qualquer no campo "Texto" para ver seus caracteres alternados entre maiúsculos e minúsculos
+      </p>
+      <form>
+        <input
+        type="text"
+        class="text-input"
+        required
+        placeholder="Texto"
+        id='text'
+        oninput="handleChange()"
+        >
+      </form>
+    </main>
+  </div>
+</body>
+</html>
