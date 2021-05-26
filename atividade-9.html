@@ -27,7 +27,7 @@
       nextAlert.setSeconds(0);
 
       const now = new Date(Date.now());
-      if(nextAlert < now)
+      if(nextAlert.getTime() <= now.getTime())
         nextAlert.setDate(nextAlert.getDate() + 1);
 
       return nextAlert;
@@ -82,7 +82,7 @@
       const hour = getValue('hour');
 
       if(observation === '') return;
-      if(hour === '') return;
+      if(hour.length !== 5) return;
 
       const item = make(observation, hour);
       data.push(item);
@@ -108,11 +108,12 @@
 
     function check() {
       const now = new Date(Date.now());
-      data.map(item => {
+      data.map((item, index) => {
         if(item.nextAlert.getTime() <= now.getTime()) {
           toast(item.observation);
           const parsed = parseTime(item.hour)
           item.nextAlert = getNextAlert(parsed.hour, parsed.minute);
+          save();
         }
       });
     }
@@ -138,15 +139,51 @@
       setInterval(check, 1000);
     };
 
+    let hourIndex = 0;
+
+    function hourChangeHandler(event) {
+      const newValue = getValue('hour');
+      const oldValue = newValue.substr(0, newValue.length - 1);
+      const newLetter = [...newValue].pop();
+
+      if(newLetter && !newLetter.match(regexNumeros))
+        return setValue('hour', oldValue);
+  
+      if(newValue.length > 5)
+        return setValue('hour', oldValue);
+      
+      if(newValue.length === 2)
+        return setValue('hour', newValue + ':');
+      
+      if(newValue.length === 5) {
+        let hours = parseInt(newValue.split(':')[0]);
+        let minutes = parseInt(newValue.split(':')[1]);
+  
+        if(minutes >= 60) {
+          hours += Math.floor(minutes/60);
+          minutes %= 60;
+        }
+  
+        if(hours >= 24)
+          hours %= 24;
+  
+        const parsedValue = `${padZeros(hours)}:${padZeros(minutes)}`;
+        setValue('hour', parsedValue);
+      }
+  
+    }
+
   </script>
 
   <title>Document</title>
 </head>
 <body>
   <div class="wrapper"> 
-    <div
+    <form
       id='content'
       class="content"
+      action='javascript:void(0)'
+      novalidate
     >
       <h1 class="title">
         Despertador ⏰
@@ -163,13 +200,14 @@
       >
 
       <input
-        type="time"
+        type='text'
         class="text-input"
         required
         placeholder="Horário"
         id='hour'
         name='text'
         aria-label='Horário do seu novo alarma, 4 números'
+        oninput='hourChangeHandler(event)'
       >
     
       <button
@@ -183,7 +221,7 @@
 
       <div id='list' class='list'></div>
 
-    </div>
+    </form>
   </div>
 
   <div id='toast-wrapper'>
