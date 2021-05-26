@@ -26,8 +26,6 @@ function titlefy(fullName) {
   }).join(' ');
 }
 
-
-
 function padZeros(x) {
   let str = x.toString();
   if(str.length < 2)
