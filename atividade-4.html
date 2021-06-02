@@ -23,8 +23,9 @@
       const matches = text.match(new RegExp(highlight));
       
       let resultado = text;
-      for(let match of matches)
-        resultado = resultado.replace(new RegExp(match, 'gi'), `<span class='highlight'>${match}</span>`)
+      if(matches !== null)
+        for(let match of matches)
+          resultado = resultado.replace(new RegExp(match, 'gi'), `<span class='highlight'>${match}</span>`)
 
       setInner('paper', resultado);
     }
