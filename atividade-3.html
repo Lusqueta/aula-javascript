@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='pt-br'>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,9 +9,12 @@
   <script src='./scripts/utils.js'></script>
   <script>
 
-    function handleClick() {
+    function handleChange() {
       const text = getValue('text');
-      setInner('paper', Array.from(text.replace(/\ /gi, '⠀')).join(' '));
+
+      const resultado = [...text.replace(/\ /gi, '⠀')].join('⠀');
+
+      setInner('paper', resultado);
     }
 
   </script>
@@ -33,13 +36,8 @@
         required
         placeholder="Texto"
         id='text'
+        oninput='handleChange()'
       >
-      <button
-        class="button"
-        onclick="handleClick()"
-      >
-        Visualizar
-      </button>
       <div id='paper' class="paper text-middle"></div>
     </main>
   </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='pt-br'>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,13 +10,22 @@
   
   <script>
 
-    function handleClick() {
+    function handleChange() {
       const text = getValue('text');
       const highlight = getValue('highlight');
 
-      const parsed = text.split(' ').map(word => word === highlight? `<span class='highlight'>${word}</span>` : word).join(' ');
+      // const parsed = text.split(' ').map(word => word === highlight? `<span class='highlight'>${word}</span>` : word).join(' ');
     
-      setInner('paper', parsed);
+      const matches = text.match(new RegExp(highlight));
+
+      if(!matches || highlight === '') return;
+      
+      let resultado = text;
+
+      for(let match of matches)
+        resultado = resultado.replace(new RegExp(match, 'gi'), `<span class='highlight'>${match}</span>`)
+
+      setInner('paper', resultado);
     }
 
   </script>
@@ -39,6 +48,7 @@
         required
         placeholder="Texto"
         id='text'
+        oninput='handleChange()'
       >
       <input
         type="text"
@@ -46,14 +56,8 @@
         required
         placeholder="Destaque"
         id='highlight'
-        oninput="handle"
+        oninput="handleChange()"
       >
-      <button
-        class="button"
-        onclick="handleClick()"
-      >
-        Resultado
-      </button>
       <div id='paper' class="paper"></div>
     </main>
   </div>
