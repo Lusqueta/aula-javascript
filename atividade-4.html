@@ -14,14 +14,15 @@
       const text = getValue('text');
       const highlight = getValue('highlight');
 
-      // const parsed = text.split(' ').map(word => word === highlight? `<span class='highlight'>${word}</span>` : word).join(' ');
-    
-      const matches = text.match(new RegExp(highlight));
+      if(text === '')
+        return setInner('paper', '');
 
-      if(!matches || highlight === '') return;
+      if(highlight === '')
+        return setInnner('paper', text); 
+
+      const matches = text.match(new RegExp(highlight));
       
       let resultado = text;
-
       for(let match of matches)
         resultado = resultado.replace(new RegExp(match, 'gi'), `<span class='highlight'>${match}</span>`)
 
@@ -45,7 +46,6 @@
       <input
         type="text"
         class="text-input"
-        required
         placeholder="Texto"
         id='text'
         oninput='handleChange()'
@@ -53,7 +53,6 @@
       <input
         type="text"
         class="text-input"
-        required
         placeholder="Destaque"
         id='highlight'
         oninput="handleChange()"

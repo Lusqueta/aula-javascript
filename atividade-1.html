@@ -11,12 +11,7 @@
 
     function handleInput() {
       const name = filterInput(getValue('name'), regexNome);
-      setValue('name', titlefy(name));
-    }
-
-    function handleClick() {
-      const name = getValue('name');
-      setInner('paper', name);
+      setInner('paper', titlefy(name));
     }
 
   </script>
@@ -40,12 +35,6 @@
         id='name'
         oninput='handleInput()'
       >
-      <button
-        class="button"
-        onclick="handleClick()"
-      >
-        Ver
-      </button>
       <div id='paper' class="paper text-middle"></div>
     </main>
   </div>
